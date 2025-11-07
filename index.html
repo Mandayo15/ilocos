@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discover Ilocos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === Global Styles === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f9fafc;
+            scroll-behavior: smooth;
+            color: #333;
+        }
+
+        /* === Navbar === */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            background: rgba(0, 119, 182, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd60a;
+        }
+
+        /* === Hero Section === */
+        .hero {
+            background: url('ilocos_images/hero.jpg') no-repeat center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+
+        .btn {
+            background: #00b4d8;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0077b6;
+        }
+
+        /* === Section Styling === */
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #0077b6;
+            margin-bottom: 20px;
+        }
+
+        /* === About === */
+        .about {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .about img {
+            width: 45%;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.8s ease;
+        }
+
+        .about-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* === Attractions === */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .attraction-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .attraction-card.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .attraction-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .attraction-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .attraction-card h3 {
+            color: #0077b6;
+            margin: 15px 0 5px;
+        }
+
+        .attraction-card p {
+            padding: 0 15px 20px;
+            font-size: 0.95em;
+        }
+
+        /* === Gallery === */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .gallery-grid img.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        /* === Contact === */
+        .contact {
+            background: url('ilocos_images/map.jpg') no-repeat center/cover;
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        .contact::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .contact .overlay {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: auto;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        .contact-form button {
+            background: #ffd60a;
+            color: #0077b6;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: #ffb703;
+        }
+
+        /* === Footer === */
+        footer {
+            background: linear-gradient(to right, #0077b6, #00b4d8);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+        }
+
+        /* === Animation Utilities === */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s ease;
+        }
+
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">ILOCOS</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#attractions">Attractions</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Discover Ilocos</h1>
+            <p>Where heritage, nature, and adventure meet under the northern sun.</p>
+            <a href="#about" class="btn">Start Exploring</a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="fade-up">
+        <h2>About Ilocos</h2>
+        <div class="about">
+            <img src="ilocos_images/paoay_church.jpg" alt="Paoay Church">
+            <div class="about-text">
+                <p>Ilocos, located in the northwestern region of the Philippines, is a province known for its stunning
+                    beaches, rich cultural heritage, and vibrant traditions. Divided into Ilocos Norte and Ilocos Sur,
+                    it offers a mix of adventure, relaxation, and history.</p>
+                <p>From the UNESCO World Heritage city of Vigan to the serene shores of Pagudpud, Ilocos invites
+                    travelers to experience its charm, taste its delicacies, and embrace its warmth.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ATTRACTIONS -->
+    <section id="attractions">
+        <h2>Top Attractions</h2>
+        <div class="attractions-grid">
+            <div class="attraction-card fade-up">
+                <img src="ilocos_images/vigan.jpg" alt="Vigan City">
+                <h3>Vigan City</h3>
+                <p>Step into a colonial past through Vigan’s cobblestone streets and ancestral homes.</p>
+            </div>
+            <div class="attraction-card fade-up">
+                <img src="ilocos_images/pagudpud.jpg" alt="Pagudpud">
+                <h3>Pagudpud Beach</h3>
+                <p>Relax on the powdery white sands of Pagudpud, the "Boracay of the North."</p>
+            </div>
+            <div class="attraction-card fade-up">
+                <img src="ilocos_images/kapurpurawan.jpg" alt="Kapurpurawan Rocks">
+                <h3>Kapurpurawan Rock Formation</h3>
+                <p>Marvel at Ilocos’ natural limestone masterpiece sculpted by the wind and sea.</p>
+            </div>
+            <div class="attraction-card fade-up">
+                <img src="ilocos_images/sand_dunes.jpg" alt="Sand Dunes">
+                <h3>Sand Dunes</h3>
+                <p>Experience thrilling 4x4 rides across the iconic La Paz and Paoay Sand Dunes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery-grid">
+            <img class="fade-up" src="ilocos_images/vigan.jpg" alt="Vigan">
+            <img class="fade-up" src="ilocos_images/paoay_church.jpg" alt="Paoay Church">
+            <img class="fade-up" src="ilocos_images/pagudpud.jpg" alt="Pagudpud">
+            <img class="fade-up" src="ilocos_images/kapurpurawan.jpg" alt="Kapurpurawan">
+            <img class="fade-up" src="ilocos_images/sand_dunes.jpg" alt="Sand Dunes">
+            <img class="fade-up" src="ilocos_images/sunset.jpg" alt="Sunset">
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact fade-up">
+        <div class="overlay">
+            <h2>Contact Us</h2>
+            <p>Plan your Ilocos adventure today! We’d love to hear from you.</p>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message!');">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2025 Discover Ilocos | Designed with ❤️ by [Your Name]</p>
+    </footer>
+
+    <!-- === Scroll Animation Script === -->
+    <script>
+        const fadeEls = document.querySelectorAll('.fade-up, .attraction-card img, .gallery-grid img');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        fadeEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>
